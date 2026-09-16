@@ -331,24 +331,31 @@
   }
 }
 
-// ==========================================
-// RESPONSIVE CHO ĐIỆN THOẠI & TABLET (< 600px)
-// ==========================================
 @media screen and (max-width: 600px) {
+
   .modal-overlay {
-    padding: 10px; // Tránh modal dính sát mép màn hình điện thoại
-    align-items: flex-end; // Đặt modal sát đáy giống dạng bottom-sheet cho dễ thao tác, hoặc để center tùy ý (để center thì sửa lại align-items: center)
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
   }
 
   .modal-content {
     width: 100%;
     max-width: 100%;
-    max-height: 85vh; // Giới hạn cứng chiều cao tối đa để luôn thấy đáy
+    height: 90dvh;
+    max-height: 90dvh;
     padding: 1rem;
-    border-radius: 16px 16px 0 0; // Bo tròn phần trên nếu làm dạng sheet, hoặc giữ nguyên 12px nếu ở giữa
+    border-radius: 16px 16px 0 0;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    overflow: hidden;
 
     h2 {
       font-size: 18px;
@@ -360,25 +367,32 @@
       top: 0.5rem;
       right: 0.5rem;
       font-size: 1.4rem;
+      z-index: 10;
     }
 
-    // Biến phần .new thành flex container để chia vùng cuộn và vùng bottom
     .new {
       display: flex;
       flex-direction: column;
       flex: 1;
-      overflow: hidden; // Ẩn phần tràn ngoài, nhường chỗ cho scroll ở bên trong
+      min-height: 0;
+      overflow: hidden;
 
-      // Tạo vùng cuộn riêng cho các trường nhập liệu (trừ bottom ra)
-      .top, .center {
-        overflow-y: auto;
-        flex: 1;
-        padding-right: 4px;
-        margin-bottom: 0;
+      .top,
+      .center {
+        flex: none;
+        overflow: visible;
       }
 
       .center {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding-right: 4px;
+        padding-bottom: 10px;
+        scrollbar-width: thin;
+
         ul {
+
           li {
             flex-direction: column;
             align-items: stretch;
@@ -396,6 +410,7 @@
             input[type="time"] {
               width: 100%;
               padding: 6px 10px;
+              box-sizing: border-box;
             }
           }
 
@@ -419,33 +434,64 @@
 
         .subtasks-editor {
           margin-top: 10px;
+
+          .sub-header {
+            font-size: 15px;
+          }
+
           .subtask-inputs {
             max-height: 100px;
+            overflow-y: auto;
+          }
+
+          .subtask-input-row {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            input {
+              min-width: 0;
+              width: 100%;
+            }
           }
         }
       }
 
-      // Cố định phần bottom luôn nằm ở cuối khung nhìn modal, không bị cuộn mất
+
       .bottom {
-        flex-shrink: 0; // Không cho phép co lại
+        flex-shrink: 0;
         display: flex;
+        align-items: center;
         gap: 8px;
-        margin-top: 12px;
+        margin-top: 8px;
         padding-top: 10px;
-        border-top: 1px solid #eee; // Tạo đường ranh giới nhẹ với phần cuộn phía trên
+        border-top: 1px solid #eee;
         background-color: #fff;
+        position: relative;
+        z-index: 5;
+        overflow: visible;
 
         button {
           flex: 1;
           height: 38px;
-          font-size: 13px;
+          min-width: 0 !important;
           padding: 0 8px;
-          min-width: unset !important;
+          font-size: 13px;
+          white-space: nowrap;
         }
 
         .delete {
           order: 3;
-          width: 100%;
+          width: auto;
+        }
+
+        .cancel {
+          order: 1;
+        }
+
+        .save {
+          order: 2;
         }
       }
     }
