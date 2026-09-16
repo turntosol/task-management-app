@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { 
     getTasks, 
+    getTask,
     createTask, 
     updateTask, 
     deleteTask 
@@ -142,68 +143,99 @@ const useTasks = (dateFilter, categoryFilter = "", status, query) => {
     const handleSaveTask = async (taskData, editingTask) => {
         try {
             setError("");
-            const { subtasks = [], ...taskPayload } = taskData;
+
+            const {
+                subtasks = [],
+                ...taskPayload
+            } = taskData;
+
             let savedTask;
 
             if (!editingTask) {
                 savedTask = await createTask(taskPayload);
-                if (subtasks.length > 0) {
-                    for (const subtask of subtasks) {
-                        if (!subtask.title?.trim()) continue;
-                        try {
-                            await createSubTask({
-                                task: savedTask.id,
-                                title: subtask.title.trim(),
-                                is_completed: subtask.is_completed ?? false,
-                            });
-                        } catch (subErr) {
-                            console.warn("Subtask creation error:", subErr);
-                        }
-                    }
+
+                for (const subtask of subtasks) {
+                    if (!subtask.title?.trim()) continue;
+
+                    await createSubTask({
+                        task: savedTask.id,
+                        title: subtask.title.trim(),
+                        is_completed:
+                            subtask.is_completed ?? false,
+                    });
                 }
-            } else {
-                savedTask = await updateTask(editingTask.id, taskPayload);
-                const oldSubtasks = editingTask.subtasks || [];
+            }
+
+            else {
+                savedTask = await updateTask(
+                    editingTask.id,
+                    taskPayload
+                );
+
+                const oldSubtasks =
+                    editingTask.subtasks || [];
+
                 const existingSubtaskIds = subtasks
-                    .filter((sub) => typeof sub.id === "number")
-                    .map((sub) => sub.id);
+                    .filter(
+                        (sub) =>
+                            sub.id !== undefined &&
+                            sub.id !== null
+                    )
+                    .map(
+                        (sub) => String(sub.id)
+                    );
 
                 for (const oldSubtask of oldSubtasks) {
-                    if (!existingSubtaskIds.includes(oldSubtask.id)) {
-                        try {
-                            await deleteSubTask(oldSubtask.id);
-                        } catch (delErr) {
-                            console.warn("Subtask delete error:", delErr);
-                        }
+                    if (
+                        !existingSubtaskIds.includes(
+                            String(oldSubtask.id)
+                        )
+                    ) {
+                        await deleteSubTask(
+                            oldSubtask.id
+                        );
                     }
                 }
 
                 for (const subtask of subtasks) {
                     if (!subtask.title?.trim()) continue;
-                    try {
-                        if (typeof subtask.id !== "number") {
-                            await createSubTask({
-                                task: savedTask.id,
+
+                    if (
+                        subtask.id === undefined ||
+                        subtask.id === null
+                    ) {
+                        await createSubTask({
+                            task: savedTask.id,
+                            title: subtask.title.trim(),
+                            is_completed:
+                                subtask.is_completed ?? false,
+                        });
+                    } else {
+                        await updateSubTask(
+                            subtask.id,
+                            {
                                 title: subtask.title.trim(),
-                                is_completed: subtask.is_completed ?? false,
-                            });
-                        } else {
-                            await updateSubTask(subtask.id, {
-                                title: subtask.title.trim(),
-                                is_completed: subtask.is_completed ?? false,
-                            });
-                        }
-                    } catch (subErr) {
-                        console.warn("Subtask update error:", subErr);
+                                is_completed:
+                                    subtask.is_completed ?? false,
+                            }
+                        );
                     }
                 }
             }
 
             await loadTasks(filter);
             return savedTask;
+
         } catch (err) {
-            console.error("Save task error:", err);
-            setError(err.data?.detail || "Failed to save task.");
+            console.error(
+                "Save task error:",
+                err
+            );
+
+            setError(
+                err.data?.detail ||
+                "Failed to save task."
+            );
             throw err;
         }
     };

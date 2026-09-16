@@ -84,16 +84,23 @@ const Today = ({ tags = [] }) => {
   };
 
   const handleSave = async (taskData) => {
-    try {
-      const savedTask = await handleSaveTask(taskData, editingTask);
-      if (savedTask) {
-        handleCloseEditor();
+      try {
+          const savedTask = await handleSaveTask(
+              taskData,
+              editingTask
+          );
+
+          if (savedTask) {
+              handleCloseEditor();
+          }
+      } catch (err) {
+          console.error(
+              'Failed to save task in Today.jsx:',
+              err
+          );
+
+          handleCloseEditor();
       }
-    } catch (err) {
-      console.error('Failed to save task in Today.jsx:', err);
-      handleCloseEditor();
-      await loadTasks(filter);
-    }
   };
 
   const getCategoryColor = (category) => {

@@ -84,15 +84,21 @@ const tomorrowStr = formatLocalDate(tomorrowDate);
 
     const handleSave = async (taskData) => {
         try {
-            const savedTask = await handleSaveTask(taskData, editingTask);
+            const savedTask = await handleSaveTask(
+                taskData,
+                editingTask
+            );
+
             if (savedTask) {
                 handleCloseEditor();
-                await loadTasks(filter); // Đồng bộ lại danh sách
             }
         } catch (err) {
-            console.error("Failed to save task in Tomorrow.jsx:", err);
+            console.error(
+                "Failed to save task in Tomorrow.jsx:",
+                err
+            );
+
             handleCloseEditor();
-            await loadTasks(filter);
         }
     };
 

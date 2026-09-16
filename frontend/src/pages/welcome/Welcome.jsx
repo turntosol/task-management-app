@@ -30,7 +30,7 @@ const Welcome = () => {
                             textDecoration: "none",
                             marginLeft: "5px",
                      }}>
-                        <Link to="/login" style={{ textDecoration: "none" }}>Login</Link>
+                        <Link to="/login" style={{ textDecoration: "none" }}>Log In</Link>
                     </span>
                 </p>
             </div>

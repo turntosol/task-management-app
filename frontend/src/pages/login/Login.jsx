@@ -142,7 +142,7 @@ const Login = () => {
 
                     <p>
                         Don't have an account?{" "}
-                        <Link to="/register">
+                        <Link to="/register" style={{ textDecoration: "none" }}>
                             Sign Up
                         </Link>
                     </p>

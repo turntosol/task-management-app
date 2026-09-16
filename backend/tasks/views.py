@@ -1,26 +1,30 @@
-from email.utils import parsedate
-from xml.dom import ValidationErr
-
 from rest_framework.response import Response
-
-from rest_framework import viewsets, status
-from datetime import timedelta
+from rest_framework import viewsets, status, serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from django.utils import timezone
 
+from datetime import timedelta
+
+from django.utils import timezone
 from django.db.models import Count
 
-from .models import Task, Category, Tag, StickyNote, SubTask, ViewSetting
+from .models import (
+    Task,
+    Category,
+    Tag,
+    StickyNote,
+    SubTask,
+    ViewSetting,
+)
+
 from .serializers import (
     CalendarTaskSerializer,
-    TaskSerializer, 
+    TaskSerializer,
     CategorySerializer,
     TagSerializer,
     StickyNoteSerializer,
     SubTaskSerializer,
-    ViewSetting,
-    ViewSettingSerializer
+    ViewSettingSerializer,
 )
 
 
@@ -155,7 +159,7 @@ class SubTaskViewSet(viewsets.ModelViewSet):
                 task_id = int(task_id)
 
             except ValueError:
-                raise ValidationErr({
+                raise serializers.ValidationError({
                     "task":
                     "Task ID must be an integer."
                 })

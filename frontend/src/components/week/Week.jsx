@@ -92,18 +92,23 @@ const formatLocalDate = (date) => {
   };
 
   const handleSave = async (taskData) => {
-    try {
-      const savedTask = await handleSaveTask(taskData, editingTask);
+      try {
+          const savedTask = await handleSaveTask(
+              taskData,
+              editingTask
+          );
 
-      if (savedTask) {
-        handleCloseEditor();
-        await loadTasks(filter);
+          if (savedTask) {
+              handleCloseEditor();
+          }
+      } catch (err) {
+          console.error(
+              'Failed to save task in Week.jsx:',
+              err
+          );
+
+          handleCloseEditor();
       }
-    } catch (err) {
-      console.error('Failed to save task in Week.jsx:', err);
-      handleCloseEditor();
-      await loadTasks(filter);
-    }
   };
 
   const getCategoryColor = (category) => {

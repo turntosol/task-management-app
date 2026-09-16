@@ -78,6 +78,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
 
         fields = [
             "id",
+            "task",
             "title",
             "is_completed",
             "created_at",
