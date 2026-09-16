@@ -15,7 +15,6 @@ const Day = ({ tags, onAddTag, onUpdateTag, onDeleteTag }) => {
         <div className="dayContainer">
             <div className="today-title">
                 <p>Today</p>
-                <span>4</span>
             </div>
             <Today tags={tags}/>
         </div>
