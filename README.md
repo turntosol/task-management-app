@@ -6,9 +6,11 @@ Task Management App is a web-based task management system that helps users organ
 
 The application supports task management by date, calendar, category, and tags, along with a sticky wall for quick notes. Users can also securely manage their accounts through Firebase Authentication.
 
-## Demo
+The application also includes a Django Admin Dashboard for authorized administrators to manage application data through the backend administration interface.
 
-Live Demo: https://task-management-app-2c66.onrender.com
+## Demo
+Frontend: https://task-management-app-2c66.onrender.com
+Admin Dashboard: https://backend-task-management-app-b7pw.onrender.com/admin/
 
 ## Features
 
@@ -18,28 +20,29 @@ Live Demo: https://task-management-app-2c66.onrender.com
 * **Categories:** View and manage tasks by **Personal, Work, and Other** categories.
 * **Tags:** CRUD task tags and organize tasks using tags.
 * **Authentication:** Sign up, login, and logout using Firebase Authentication.
+* **Admin Dashboard:** Access Django's built-in administration interface to manage registered application data according to administrator permissions.
 
 ## Technologies
 
 ### Frontend
-
 * ReactJS
 * JavaScript
 * SCSS
 
 ### Backend
-
 * Python
 * Django
 * Django REST Framework
 
 ### Database
-
 * PostgreSQL
+* Supabase
 
 ### Authentication
-
 * Firebase Authentication
+
+### Deployment
+* Render
 
 ## Setup
 
@@ -101,6 +104,12 @@ Run migrations:
 python manage.py migrate
 ```
 
+Create a Django administrator account:
+
+```bash
+python manage.py createsuperuser
+```
+
 Start the Django development server:
 
 ```bash
@@ -111,4 +120,10 @@ The backend will run at:
 
 ```text
 http://127.0.0.1:8000/
+```
+
+After starting the Django development server, open:
+
+```bash
+http://127.0.0.1:8000/admin/
 ```
