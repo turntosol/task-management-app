@@ -10,7 +10,6 @@ The application also includes a Django Admin Dashboard for authorized administra
 
 ## Demo
 * Frontend: https://task-management-app-2c66.onrender.com
-* Admin Dashboard: https://backend-task-management-app-b7pw.onrender.com/admin/
 
 ## Features
 
