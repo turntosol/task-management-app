@@ -9,8 +9,8 @@ The application supports task management by date, calendar, category, and tags, 
 The application also includes a Django Admin Dashboard for authorized administrators to manage application data through the backend administration interface.
 
 ## Demo
-Frontend: https://task-management-app-2c66.onrender.com
-Admin Dashboard: https://backend-task-management-app-b7pw.onrender.com/admin/
+* Frontend: https://task-management-app-2c66.onrender.com
+* Admin Dashboard: https://backend-task-management-app-b7pw.onrender.com/admin/
 
 ## Features
 
