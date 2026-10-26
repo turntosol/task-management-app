@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
+from backend.tasks.models import Tag
+
 User = get_user_model()
 
 
@@ -79,6 +81,20 @@ class SyncFirebaseUserView(APIView):
                 email=email or ""
             )
             created = True
+
+        DEFAULT_TAGS = [
+            {"name": "important", "background_color": "#ef4444"},  # Đỏ
+            {"name": "urgent", "background_color": "#f59e0b"},     # Vàng/Cam
+            {"name": "other", "background_color": "#3b82f6"},      # Xanh
+        ]
+        
+        if created:
+            for tag_data in DEFAULT_TAGS:
+                Tag.objects.get_or_create(
+                    user=user,
+                    name=tag_data["name"],
+                    defaults={"background_color": tag_data["background_color"]}
+                )
 
         print("DJANGO USER:", user)
         print("CREATED:", created)

@@ -48,27 +48,29 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-
         fields = [
             "id",
             "name",
             "background_color",
         ]
-
         read_only_fields = [
             "id",
         ]
 
     def validate_name(self, value):
-
         value = value.strip()
-
         if not value:
             raise serializers.ValidationError(
                 "Tag name cannot be empty."
             )
-
         return value
+
+    def validate_background_color(self, value):
+        if not re.fullmatch(r"#[0-9A-Fa-f]{6}", value):
+            raise serializers.ValidationError(
+                "Invalid HEX color."
+            )
+        return value.upper()
 
 
 class SubTaskSerializer(serializers.ModelSerializer):

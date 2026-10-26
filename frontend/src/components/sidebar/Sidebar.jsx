@@ -23,6 +23,25 @@ const CATEGORY_COLORS = {
     order: "#1B2CC1",
 };
 
+// 1. Định nghĩa bảng màu mặc định cho các tag cứng
+const TAG_COLORS = {
+    important: "#ef4444", // Đỏ
+    urgent: "#f59e0b",    // Vàng/Cam
+    other: "#3b82f6",     // Xanh dương
+};
+
+// 2. Hàm lấy màu (ưu tiên tag cố định, nếu không có lấy màu custom hoặc màu mặc định)
+const getTagColor = (tagName, customColor) => {
+    if (!tagName) return customColor || "#3b82f6";
+    return TAG_COLORS[tagName.toLowerCase()] || customColor || "#3b82f6";
+};
+
+// 3. Hàm chuẩn hóa hiển thị tên tag (viết hoa chữ cái đầu)
+const getTagLabel = (name) => {
+    if (!name) return "";
+    return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
 const Sidebar = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
@@ -181,6 +200,7 @@ const Sidebar = () => {
                                 </li>
                             ))}
                     </ul>
+
                     <ul>
                         <p className="title">TAGS</p>
 
@@ -206,6 +226,8 @@ const Sidebar = () => {
                             {!loading && !error && (
                                 <TagList
                                     tags={tags}
+                                    getTagColor={getTagColor}
+                                    getTagLabel={getTagLabel}
                                     onUpdateTag={handleUpdateTag}
                                     onDeleteTag={handleDeleteTag}
                                 />

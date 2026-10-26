@@ -4,6 +4,13 @@ from django.db.models import F, Q
 
 
 class Tag(models.Model):
+
+    TAG_CHOICES = [
+        ("important", "Important"),
+        ("urgent", "Urgent"),
+        ("other", "Other"),
+    ]
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

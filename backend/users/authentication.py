@@ -3,6 +3,8 @@ from rest_framework import authentication
 from rest_framework import exceptions
 from django.contrib.auth import get_user_model
 
+from backend.tasks.models import Tag
+
 User = get_user_model()
 
 
@@ -80,6 +82,20 @@ class FirebaseAuthentication(
 
 
         if created:
+            
+            DEFAULT_TAGS = [
+                {"name": "important", "background_color": "#ef4444"},  # Đỏ
+                {"name": "urgent", "background_color": "#f59e0b"},     # Vàng/Cam
+                {"name": "other", "background_color": "#3b82f6"},      # Xanh
+            ]
+
+            for tag_data in DEFAULT_TAGS:
+                Tag.objects.get_or_create(
+                    user=user,
+                    name=tag_data["name"],
+                    defaults={"background_color": tag_data["background_color"]}
+                )
+
             print(
                 "=== DJANGO USER CREATED ==="
             )
