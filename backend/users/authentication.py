@@ -52,13 +52,32 @@ class FirebaseAuthentication(
 
         firebase_uid = decoded_token["uid"]
         email = decoded_token.get("email", "")
-        user, created = User.objects.get_or_create(
-            firebase_uid=firebase_uid,
-            defaults={
-                "username": firebase_uid,
-                "email": email,
-            }
-        )
+        requested_username = request.data.get("username")
+
+        user = User.objects.filter(firebase_uid=firebase_uid).first()
+
+        if user:
+            created = False
+            if requested_username and user.username != requested_username:
+                user.username = requested_username
+                user.save()
+        else:
+            fallback_username = email.split("@")[0] if email else firebase_uid
+            base_username = requested_username or fallback_username
+
+            username = base_username
+            counter = 1
+            while User.objects.filter(username=username).exists():
+                username = f"{base_username}_{counter}"
+                counter += 1
+
+            user = User.objects.create(
+                firebase_uid=firebase_uid,
+                username=username,
+                email=email or ""
+            )
+            created = True
+
 
         if created:
             print(
@@ -67,6 +86,10 @@ class FirebaseAuthentication(
             print(
                 "Firebase UID:",
                 firebase_uid
+            )
+            print(
+                "Username:", 
+                username
             )
             print(
                 "Email:",
