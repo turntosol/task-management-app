@@ -18,10 +18,19 @@ import { useAuth } from '../../context/AuthContext';
 import './sidebar.scss';
 
 const CATEGORY_COLORS = {
-    personal: "#ABD2FA",
     work: "#7692FF",
-    order: "#1B2CC1",
+    study: "#10B981",     // Màu xanh lá cho Study
+    personal: "#ABD2FA",
+    projects: "#F59E0B",  // Màu vàng/cam cho Projects
 };
+
+// Danh sách category cố định hiển thị ở Sidebar
+const STATIC_CATEGORIES = [
+    { id: "work", name: "work" },
+    { id: "study", name: "study" },
+    { id: "personal", name: "personal" },
+    { id: "projects", name: "projects" },
+];
 
 // 1. Định nghĩa bảng màu mặc định cho các tag cứng
 const TAG_COLORS = {
@@ -172,33 +181,27 @@ const Sidebar = () => {
                     <ul>
                         <p className="title">CATEGORY</p>
 
-                        {!categoriesLoading &&
-                            !categoriesError &&
-                            categories.map((category) => (
-                                <li
-                                    key={category.id}
-                                    onClick={() => {
-                                        navigate(`/category/${category.name}`);
-                                        closeSidebar();
+                        {STATIC_CATEGORIES.map((category) => (
+                            <li
+                                key={category.id}
+                                onClick={() => {
+                                    navigate(`/category/${category.name}`);
+                                    closeSidebar();
+                                }}
+                            >
+                                <div
+                                    className="color"
+                                    style={{
+                                        backgroundColor:
+                                            CATEGORY_COLORS[category.name] || "#3b82f6"
                                     }}
-                                >
-                                    <div
-                                        className="color"
-                                        style={{
-                                            backgroundColor:
-                                                CATEGORY_COLORS[category.name]
-                                        }}
-                                    />
+                                />
 
-                                    <span>
-                                        {getCategoryLabel(category.name)}
-                                    </span>
-
-                                    <div className="counter">
-                                        {category.task_count}
-                                    </div>
-                                </li>
-                            ))}
+                                <span>
+                                    {getCategoryLabel(category.name)}
+                                </span>
+                            </li>
+                        ))}
                     </ul>
 
                     <ul>

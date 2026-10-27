@@ -45,7 +45,7 @@ const AddTag = ({ onAddTag, existingTags = [] }) => {
         <div className="add-tag-trigger" onClick={() => setIsExpanded(true)}>
             <input
               type="text"
-              placeholder="Add new task..."
+              placeholder="Add new tag..."
               readOnly
               style={{
                 border: 'none',
