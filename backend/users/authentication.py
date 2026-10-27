@@ -3,7 +3,7 @@ from rest_framework import authentication
 from rest_framework import exceptions
 from django.contrib.auth import get_user_model
 
-from backend.tasks.models import Tag
+from tasks.models import Tag
 
 User = get_user_model()
 
